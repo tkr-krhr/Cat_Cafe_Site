@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UtilityController;
+use App\Http\Controllers\GameController;
 
 
 Route::get('/hello-world', function () {
@@ -15,28 +16,7 @@ Route::get('/curriculum',fn() => view(view: 'curriculum'));
 Route::get('/world-time', [UtilityController::class, 'worldTime']);
 
 // おみくじ
-Route::get('/omikuji', function () {
-    $fortunes = ['大吉', '中吉', '小吉', '吉', '末吉', '凶', '大凶'];
-    $resultIndex = array_rand($fortunes);
-    $result = $fortunes[$resultIndex];
-    return view('omikuji', ['result' => $result]);
-});
+Route::get('/omikuji', [GameController::class, 'omikuji']);
 
 // モンティ・ホール問題
-Route::get('/monty-hall', function () {
-    $results = [];
-    for ($i = 0; $i < 1000; $i++) {
-        $options = [true, false, false];
-        shuffle($options);
-
-        $selectedIndex = array_rand($options);
-        $notSelectedIndexes = array_filter($options, fn($index) => $index !== $selectedIndex, ARRAY_FILTER_USE_KEY);
-        $removeIndex = array_search(false, $notSelectedIndexes);
-        unset($notSelectedIndexes[$removeIndex]);
-
-        $changedIndex = key($notSelectedIndexes);
-        $results[] = $options[$changedIndex];
-    }
-    $wonCount = count(array_filter($results, fn($result) => $result));
-    return view('monty-hall', ['results' => $results, 'wonCount' => $wonCount]);
-});
+Route::get('/monty-hall', [GameController::class, 'montyHall']);
