@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UtilityController;
 
 
 Route::get('/hello-world', function () {
@@ -11,19 +12,7 @@ Route::get('/',fn() => view(view: 'index'));
 Route::get('/curriculum',fn() => view(view: 'curriculum'));
 
 // 世界の時間
-Route::get('/world-time', function () {
-    $timeDiff = [
-        '東京' => 0,
-        'シンガポール' => -1,
-        'パリ' => -8,
-        'ロンドン' => -9,
-        'ニューヨーク' => -14,
-        'ロサンゼルス' => -17,
-        'ハワイ' => -19,
-    ];
-    $times = array_map(fn($diff) => now()->addHours($diff), $timeDiff);
-    return view('world-time', ['times' => $times]);
-});
+Route::get('/world-time', [UtilityController::class, 'worldTime']);
 
 // おみくじ
 Route::get('/omikuji', function () {
